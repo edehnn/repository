@@ -9,52 +9,81 @@ The files in this repository were used to configure the network depicted below.
 These files have been tested and used to generate a live ELK deployment on Azure. They can be used to either recreate the entire deployment pictured above. Alternatively, select portions of the file may be used to install only certain pieces of it, such as Filebeat.
 
 
+
   - anisble-playbook /etc/anisble/pentest.yml
   
-name: Config Web VM with Docker hosts: webservers become: true tasks:
-name: Install docker.io apt: force_apt_get: yes update_cache: yes name: docker.io state: present
-name: Install pip3 apt: force_apt_get: yes name: python3-pip state: present
-name: Install Python Docker module pip: name: docker state: present
-name: download and launch a docker web container docker_container: name: dvwa image: cyberxsecurity/dvwa state: started restart_policy: always published_ports: 80:80
-name: Enable docker service systemd: name: docker enabled: yes
+1)name: Config Web VM with Docker hosts: webservers become: true tasks:
+
+2)name: Install docker.io apt: force_apt_get: yes update_cache: yes name: docker.io state: present
+
+3)name: Install pip3 apt: force_apt_get: yes name: python3-pip state: present
+
+4)name: Install Python Docker module pip: name: docker state: present
+
+5)name: download and launch a docker web container docker_container: name: dvwa image: cyberxsecurity/dvwa state: started restart_policy: always published_ports: 80:80
+
+6)name: Enable docker service systemd: name: docker enabled: yes
+
 
    
    - anisbleplaybook elk-install.yml
 
-name: Configure Elk VM with Docker
-name: Install docker.io apt: update_cache: yes name: docker.io state: present
-name: Install pip3 apt: force_apt_get: yes name: python3-pip state: present
-name: Install Docker python module pip: name: docker state: present
-name: Use more memory sysctl: name: vm.max_map_count value: "262144" state: present reload: yes
-name: download and launch a docker elk container docker_container: name: elk image: sebp/elk:761 state: started restart_policy: always published_ports:
+1)name: Configure Elk VM with Docker
+
+2)name: Install docker.io apt: update_cache: yes name: docker.io state: present
+
+3)name: Install pip3 apt: force_apt_get: yes name: python3-pip state: present
+
+4)name: Install Docker python module pip: name: docker state: present
+
+5)name: Use more memory sysctl: name: vm.max_map_count value: "262144" state: present reload: yes
+
+6)name: download and launch a docker elk container docker_container: name: elk image: sebp/elk:761 state: started restart_policy: always published_ports:
           - 5601:5601
           - 9200:9200
           - 5044:5044
-name: Enable service docker on boot systemd: name: docker enabled: yes
+
+7)name: Enable service docker on boot systemd: name: docker enabled: yes
+
 
 
   - filebeat-playbook.yml
 
-name: Installing and Launch Filebeat hosts: webservers become: yes tasks:
-name: Download filebeat .deb file command: curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.4.0-amd64.deb
-name: Install filebeat .deb command: dpkg -i filebeat-7.4.0-amd64.deb
-name: Drop in filebeat.yml copy: src: /etc/ansible/files/filebeat-config.yml dest: /etc/filebeat/filebeat.yml
-name: Enable and Configure System Module command: filebeat modules enable system
-name: Setup filebeat command: filebeat setup
-name: Start filebeat service command: service filebeat start
-name: Enable service filebeat on boot systemd: name: filebeat enabled: yes
+1)name: Installing and Launch Filebeat hosts: webservers become: yes tasks:
+
+2)name: Download filebeat .deb file command: curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.4.0-amd64.deb
+
+3)name: Install filebeat .deb command: dpkg -i filebeat-7.4.0-amd64.deb
+
+4)name: Drop in filebeat.yml copy: src: /etc/ansible/files/filebeat-config.yml dest: /etc/filebeat/filebeat.yml
+
+5)name: Enable and Configure System Module command: filebeat modules enable system
+
+6)name: Setup filebeat command: filebeat setup
+
+7)name: Start filebeat service command: service filebeat start
+
+8)name: Enable service filebeat on boot systemd: name: filebeat enabled: yes
+
 
 
   - metric-playbook.yml
 
-name: Install metric beat hosts: webservers become: true tasks:
-name: Download metricbeat command: curl -L -O https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-7.4.0-amd64.deb
-name: install metricbeat command: dpkg -i metricbeat-7.4.0-amd64.deb
-name: drop in metricbeat config copy: src: /etc/ansible/files/metricbeat-config.yml dest: /etc/metricbeat/metricbeat.yml
-name: enable and configure docker module for metric beat command: metricbeat modules enable docker
-name: setup metric beat command: metricbeat setup
-name: start metric beat command: service metricbeat start
-name: Enable service metricbeat on boot systemd: name: metricbeat
+1)name: Install metric beat hosts: webservers become: true tasks:
+
+2)name: Download metricbeat command: curl -L -O https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-7.4.0-amd64.deb
+
+3)name: install metricbeat command: dpkg -i metricbeat-7.4.0-amd64.deb
+
+4)name: drop in metricbeat config copy: src: /etc/ansible/files/metricbeat-config.yml dest: /etc/metricbeat/metricbeat.yml
+
+5)name: enable and configure docker module for metric beat command: metricbeat modules enable docker
+
+6)name: setup metric beat command: metricbeat setup
+
+7)name: start metric beat command: service metricbeat start
+
+8)name: Enable service metricbeat on boot systemd: name: metricbeat
 
 
 This document contains the following details:
@@ -176,10 +205,14 @@ SSH into the control node and follow the steps below:
 - Update the ansible host file to include the following.
 
 [webservers]
+
 10.0.0.7 ansible_python_interpreter=/usr/bin/python3
+
 10.0.0.8 ansible_python_interpreter=/usr/bin/python3
 
+
 [elk]
+
 10.1.0.4 ansible_python_interpreter=/usr/bin/python3
 
 - Run the playbook, and navigate to Jumpbox to check that the installation worked as expected.
