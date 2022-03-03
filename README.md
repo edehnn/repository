@@ -27,7 +27,7 @@ These files have been tested and used to generate a live ELK deployment on Azure
 
 
    
-   - anisbleplaybook elk-install.yml
+   - anisble-playbook elk-install.yml
 
 
 1)name: Configure Elk VM with Docker
