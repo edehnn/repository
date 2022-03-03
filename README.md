@@ -12,6 +12,7 @@ These files have been tested and used to generate a live ELK deployment on Azure
 
   - anisble-playbook /etc/anisble/pentest.yml
   
+  
 1)name: Config Web VM with Docker hosts: webservers become: true tasks:
 
 2)name: Install docker.io apt: force_apt_get: yes update_cache: yes name: docker.io state: present
@@ -27,6 +28,7 @@ These files have been tested and used to generate a live ELK deployment on Azure
 
    
    - anisbleplaybook elk-install.yml
+
 
 1)name: Configure Elk VM with Docker
 
@@ -49,6 +51,7 @@ These files have been tested and used to generate a live ELK deployment on Azure
 
   - filebeat-playbook.yml
 
+
 1)name: Installing and Launch Filebeat hosts: webservers become: yes tasks:
 
 2)name: Download filebeat .deb file command: curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.4.0-amd64.deb
@@ -68,6 +71,7 @@ These files have been tested and used to generate a live ELK deployment on Azure
 
 
   - metric-playbook.yml
+
 
 1)name: Install metric beat hosts: webservers become: true tasks:
 
